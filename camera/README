@@ -1,1 +1,6 @@
 https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/5
+
+
+sudo apt-get install python3-picamera
+
+python3 camera.py
