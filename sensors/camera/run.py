@@ -39,12 +39,13 @@ client = mqtt.Client(protocol=mqtt.MQTTv31)
 client.on_connect = on_connect
 client.on_message = on_message
 
-port = int(config['mqtt-broker']['port'])
-
-if config['mqtt-broker']['certificate']:
+try:
     client.tls_set(config['mqtt-broker']['certificate'])
     client.tls_insecure_set(config['mqtt-broker']['host'])
     port = int(config['mqtt-broker']['tls-port'])
+    pass
+except(e):
+    port = int(config['mqtt-broker']['port'])
 
 client.connect(config['mqtt-broker']['host'], port, 60)
 
