@@ -24,10 +24,12 @@ def on_message(client, userdata, msg):
         camera.capture(file.name)
         content = file.read()
         file.close()
+        client.publish(config['mqtt-broker']['topic-prefix'] + "/" + config['device']['name'] + "/camera/response",
+            base64.b64encode(content))
         os.unlink(file.name)
-        publish.single(config['mqtt-broker']['topic-prefix'] + "/" + config['device']['name'] + "/camera/response",
-                       base64.b64encode(content), hostname=config['mqtt-broker']['host'])
         pass
+    except Exception as exception:
+        print(exception)
     finally:
         camera.close()
 
@@ -44,7 +46,7 @@ try:
     client.tls_insecure_set(config['mqtt-broker']['host'])
     port = int(config['mqtt-broker']['tls-port'])
     pass
-except(e):
+except Exception as exception:
     port = int(config['mqtt-broker']['port'])
 
 client.connect(config['mqtt-broker']['host'], port, 60)
