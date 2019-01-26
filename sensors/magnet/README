@@ -1,0 +1,9 @@
+https://www.elektronik-kompendium.de/sites/raspberry-pi/2202121.htm
+
+
+sudo apt-get install pigpio
+sudo systemctl start pigpiod
+sudo systemctl enable pigpiod
+
+
+pigs modes 6 w
