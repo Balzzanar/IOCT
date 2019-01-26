@@ -1,0 +1,7 @@
+https://thepihut.com/blogs/raspberry-pi-tutorials/45295044-raspberry-pi-7-touch-screen-assembly-guide
+
+sudo apt-get install raspberrypi-ui-mods
+sudo apt-get install raspberrypi-net-mods
+
+
+https://www.waveshare.com/wiki/3.2inch_RPi_LCD_(B)
