@@ -9,3 +9,19 @@ iptables --table nat --delete-chain
 
 iptables --table nat --append POSTROUTING --out-interface enp0s31f6 -j MASQUERADE
 iptables --append FORWARD --in-interface enp0s31f6 -j ACCEPT
+
+
+
+
+
+
+
+
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+ address 10.42.42.2
+ netmask 255.255.255.0
+ gateway 10.42.42.1

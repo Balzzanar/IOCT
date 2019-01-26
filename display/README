@@ -5,3 +5,14 @@ sudo apt-get install raspberrypi-net-mods
 
 
 https://www.waveshare.com/wiki/3.2inch_RPi_LCD_(B)
+
+
+
+
+The driver can be downloaded from github
+git clone https://github.com/waveshare/LCD-show.git
+cd LCD-show
+sudo ./LCD32-show
+    -> this will reboot the pi !
+
+-> after that the screen worked and the HDMI output was disabled
