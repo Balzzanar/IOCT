@@ -1,0 +1,11 @@
+ip addr add dev enp0s31f6 10.42.42.1/24
+
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+iptables --flush
+iptables --table nat --flush
+iptables --delete-chain
+iptables --table nat --delete-chain
+
+iptables --table nat --append POSTROUTING --out-interface enp0s31f6 -j MASQUERADE
+iptables --append FORWARD --in-interface enp0s31f6 -j ACCEPT
