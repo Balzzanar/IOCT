@@ -1,6 +1,10 @@
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import configparser
+import tempfile
+import os
+import base64
+from picamera import PiCamera
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -8,14 +12,24 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    # client.subscribe(config['mqtt-broker']['topic-prefix'] + "/" + config['device']['name'])
-    client.subscribe("iotc/box1")
-    print("subscribed to iotc/box1")
+    client.subscribe(config['mqtt-broker']['topic-prefix'] + "/" + config['device']['name'] + "/camera/capture")
 
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.payload))
+    # try to get a new image from the camera
+    camera = PiCamera()
+    try:
+        file = tempfile.NamedTemporaryFile(suffix='image.jpg')
+        camera.capture(file.name)
+        content = file.read()
+        file.close()
+        os.unlink(file.name)
+        publish.single(config['mqtt-broker']['topic-prefix'] + "/" + config['device']['name'] + "/camera/response",
+                       base64.b64encode(content), hostname=config['mqtt-broker']['host'])
+        pass
+    finally:
+        camera.close()
 
 
 config = configparser.ConfigParser()
@@ -28,8 +42,6 @@ client.on_message = on_message
 client.tls_set()
 client.tls_insecure_set(config['mqtt-broker']['host'])
 client.connect(config['mqtt-broker']['host'], int(config['mqtt-broker']['port']), 60)
-
-publish.single("iotc/box1", "Hello World!", hostname=config['mqtt-broker']['host'])
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
