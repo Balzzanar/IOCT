@@ -39,9 +39,14 @@ client = mqtt.Client(protocol=mqtt.MQTTv31)
 client.on_connect = on_connect
 client.on_message = on_message
 
-client.tls_set()
-client.tls_insecure_set(config['mqtt-broker']['host'])
-client.connect(config['mqtt-broker']['host'], int(config['mqtt-broker']['port']), 60)
+port = int(config['mqtt-broker']['port'])
+
+if config['mqtt-broker']['certificate']:
+    client.tls_set(config['mqtt-broker']['certificate'])
+    client.tls_insecure_set(config['mqtt-broker']['host'])
+    port = int(config['mqtt-broker']['tls-port'])
+
+client.connect(config['mqtt-broker']['host'], port, 60)
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
