@@ -13,7 +13,7 @@ while 1:
         camera.capture(file.name)
         content = file.read()
         file.close()
-        broker.publish("response", base64.b64encode(content))
+        broker.publish("current", base64.b64encode(content))
         pass
     except Exception as exception:
         print(exception)
