@@ -1,8 +1,6 @@
 import paho.mqtt.client as mqtt
-import paho.mqtt.publish as publish
 import configparser
 import tempfile
-import os
 import base64
 from picamera import PiCamera
 
@@ -26,7 +24,6 @@ def on_message(client, userdata, msg):
         file.close()
         client.publish(config['mqtt-broker']['topic-prefix'] + "/" + config['device']['name'] + "/camera/response",
             base64.b64encode(content))
-        os.unlink(file.name)
         pass
     except Exception as exception:
         print(exception)
@@ -35,7 +32,7 @@ def on_message(client, userdata, msg):
 
 
 config = configparser.ConfigParser()
-config.read('../../config.ini')
+config.read('../../config.ini.dist')
 
 client = mqtt.Client(protocol=mqtt.MQTTv31)
 client.on_connect = on_connect

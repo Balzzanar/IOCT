@@ -1,9 +1,11 @@
 [mqtt-broker]
-host = localhost
+host = ioct-box1
 port = 1883
 tls-port = 8883
 topic-prefix = ioct
 certificate = /etc/mosquitto/certs/root.crt
+username = cat
+password = meow
 
 [device]
 name=box1
