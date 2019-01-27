@@ -1,20 +1,11 @@
-import paho.mqtt.client as mqtt
-import configparser
 import tempfile
 import base64
 from picamera import PiCamera
+import time
+from library.brokerservice import BrokerService
 
-
-# The callback for when the client receives a CONNACK response from the server.
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code " + str(rc))
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
-    client.subscribe(config['mqtt-broker']['topic-prefix'] + "/" + config['device']['name'] + "/camera/capture")
-
-
-# The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
+broker = BrokerService('camera')
+while 1:
     # try to get a new image from the camera
     camera = PiCamera()
     try:
@@ -22,34 +13,10 @@ def on_message(client, userdata, msg):
         camera.capture(file.name)
         content = file.read()
         file.close()
-        client.publish(config['mqtt-broker']['topic-prefix'] + "/" + config['device']['name'] + "/camera/response",
-            base64.b64encode(content))
+        broker.publish("response", base64.b64encode(content))
         pass
     except Exception as exception:
         print(exception)
     finally:
         camera.close()
-
-
-config = configparser.ConfigParser()
-config.read('../../config.ini.dist')
-
-client = mqtt.Client(protocol=mqtt.MQTTv31)
-client.on_connect = on_connect
-client.on_message = on_message
-
-try:
-    client.tls_set(config['mqtt-broker']['certificate'])
-    client.tls_insecure_set(config['mqtt-broker']['host'])
-    port = int(config['mqtt-broker']['tls-port'])
-    pass
-except Exception as exception:
-    port = int(config['mqtt-broker']['port'])
-
-client.connect(config['mqtt-broker']['host'], port, 60)
-
-# Blocking call that processes network traffic, dispatches callbacks and
-# handles reconnecting.
-# Other loop*() functions are available that give a threaded interface and a
-# manual interface.
-client.loop_forever()
+    time.sleep(10)

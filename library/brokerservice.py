@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 import configparser
+import os
 
 
 class BrokerService:
@@ -10,7 +11,7 @@ class BrokerService:
 
     def __init__(self, topic_name):
         self.config = configparser.ConfigParser()
-        self.config.read('../../config.ini')
+        self.config.read(os.path.join(os.path.dirname(__file__), '../config.ini'))
 
         self.client = mqtt.Client(protocol=mqtt.MQTTv31)
         self.client.on_connect = self._on_connect
@@ -38,6 +39,10 @@ class BrokerService:
     # publish a message to a topic
     def publish(self, topic, message):
         self.client.publish(self.topicPrefix + topic, message)
+
+    # publish a message to a topic
+    def loop(self):
+        self.client.loop_forever()
 
     # The callback for when the client receives a CONNACK response from the server.
     def _on_connect(self, client, userdata, flags, rc):
