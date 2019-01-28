@@ -1,27 +1,73 @@
-ip addr add dev enp0s31f6 10.42.42.1/24
 
-echo 1 > /proc/sys/net/ipv4/ip_forward
-
-iptables --flush
-iptables --table nat --flush
-iptables --delete-chain
-iptables --table nat --delete-chain
-
-iptables --table nat --append POSTROUTING --out-interface enp0s31f6 -j MASQUERADE
-iptables --append FORWARD --in-interface enp0s31f6 -j ACCEPT
+apt install hostapd isc-dhcp-server
 
 
+/etc/network/interfaces
 
+# interfaces(5) file used by ifup(8) and ifdown(8)
 
+# Please note that this file is written to be used with dhcpcd
+# For static IP, consult /etc/dhcpcd.conf and 'man dhcpcd.conf'
 
-
-
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
 
 auto lo
 iface lo inet loopback
 
 auto eth0
+# iface eth0 inet dhcp
 iface eth0 inet static
- address 10.42.42.2
+ address 192.168.170.229
+ netmask 255.255.254.0
+ gateway 192.168.170.1
+
+auto wlan0
+iface wlan0 inet static
+ address 10.42.42.1
  netmask 255.255.255.0
- gateway 10.42.42.1
+
+
+
+
+
+
+/etc/hostapd/hostapd.conf
+
+
+interface=wlan0
+hw_mode=g
+channel=7
+wmm_enabled=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=CCMP
+rsn_pairwise=CCMP
+ssid=IOCT
+wpa_passphrase=IOCT_h4ck3r
+
+
+
+
+
+
+/etc/dhcp/dhcpd.conf
+
+
+option domain-name "ioct.dev";
+option domain-name-servers 8.8.8.8, 1.1.1.1;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+subnet 10.42.42.0 netmask 255.255.255.0 {
+   option domain-name "wifi.localhost";
+   option routers 10.42.42.1;
+   option subnet-mask 255.255.255.0;
+   option broadcast-address 10.42.42.255;
+   option domain-name-servers 8.8.8.8;
+   range dynamic-bootp 10.42.42.10 10.42.42.100;
+}
