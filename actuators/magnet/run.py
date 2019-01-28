@@ -23,3 +23,5 @@ def switch(msg):
 
 # subscribe to the "magnet/switch" topic to forward messages to our callback function
 broker.subscribe('switch', switch)
+broker.loop()
+GPIO.cleanup()
