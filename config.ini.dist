@@ -8,4 +8,9 @@ username = cat
 password = meow
 
 [device]
-name=box1
+name = box1
+
+[gpoi]
+magnet = 31
+light = 8
+
