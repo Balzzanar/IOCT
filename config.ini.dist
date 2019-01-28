@@ -11,6 +11,6 @@ password = meow
 name = box1
 
 [gpio]
-magnet = 31
-light = 8
+magnet = 6
+light = 5
 
