@@ -28,3 +28,4 @@ in the crontab of the pi user:
 disabled the xscreensaver in :
 /etc/xdg/lxsession/LXDE/autostart
 + deinstalled xscreensaver
++ did what was explained here:     http://www.etcwiki.org/wiki/Disable_screensaver_and_screen_blanking_Raspberry_Pi
