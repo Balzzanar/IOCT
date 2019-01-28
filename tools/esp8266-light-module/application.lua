@@ -26,30 +26,24 @@ local isConnected = false
 --      Functions      --
 --                     --
 function setRelay(status)
-    -- true == on, false == off
-    if (status)then
-        gpio.write(GPIO_LED_PIN, GPIO_LED_ON)
-				print("ON");
-gpio.write(1, gpio.LOW);
-gpio.write(2, gpio.LOW);
-gpio.write(3, gpio.LOW);
-    else
-        gpio.write(GPIO_LED_PIN, GPIO_LED_OFF)
-				print("OFF");
-gpio.write(1, gpio.LOW);
-gpio.write(2, gpio.LOW);
-gpio.write(3, gpio.HIGH);
-    end
+-- true == on, false == off
+	if (status)then
+		gpio.write(GPIO_LED_PIN, GPIO_LED_ON)
+		print("ON");
+	else
+		gpio.write(GPIO_LED_PIN, GPIO_LED_OFF)
+		print("OFF");
+	end
 end
 
 function toggle()
-		if (GPIO_MAIN_CONTROL_STATUS)then
-			GPIO_MAIN_CONTROL_STATUS = false;
-			setRelay(false)
-		else
-			GPIO_MAIN_CONTROL_STATUS = true;
-			setRelay(true)
-		end
+	if (GPIO_MAIN_CONTROL_STATUS)then
+		GPIO_MAIN_CONTROL_STATUS = false;
+		setRelay(false)
+	else
+		GPIO_MAIN_CONTROL_STATUS = true;
+		setRelay(true)
+	end
 end
 
 --                       --
@@ -65,15 +59,10 @@ local duration = 3000
 -- Initialising pin
 gpio.mode(GPIO_LED_PIN, gpio.OUTPUT)
 
-gpio.mode(1, gpio.OUTPUT)
-gpio.mode(2, gpio.OUTPUT)
-gpio.mode(3, gpio.OUTPUT)
-
-
 
 -- Create an interval
 tmr.alarm(0, duration, 1, function ()
-   toggle(); 
+	toggle(); 
 end)
 
 
