@@ -3,8 +3,8 @@ import RPi.GPIO as GPIO
 
 broker = BrokerService('magnet')
 
-PIN_MAGNET = broker.config['gpio']['magnet']
-PIN_LIGHT = broker.config['gpio']['light']
+PIN_MAGNET = int(broker.config['gpio']['magnet'])
+PIN_LIGHT = int(broker.config['gpio']['light'])
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PIN_LIGHT, GPIO.OUT)

@@ -10,7 +10,7 @@ password = meow
 [device]
 name = box1
 
-[gpoi]
+[gpio]
 magnet = 31
 light = 8
 
