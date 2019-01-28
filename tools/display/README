@@ -16,3 +16,15 @@ sudo ./LCD32-show
     -> this will reboot the pi !
 
 -> after that the screen worked and the HDMI output was disabled
+
+
+
+# display nyan cat in fullscreen
+
+in the crontab of the pi user:
+@ reboot      sleep 60 ; DISPLAY=:0 ; export DISPLAY ; xhost + ; eog --fullscreen IOCT/nyan_cat.gif
+
+
+disabled the xscreensaver in :
+/etc/xdg/lxsession/LXDE/autostart
++ deinstalled xscreensaver
