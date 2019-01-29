@@ -4,10 +4,17 @@ import RPi.GPIO as GPIO
 
 # act on switch message
 def switch(msg):
-    if msg == "on":
+    print(msg)
+    print(str(msg))
+    if (msg == "on") or (str(msg) == "b'on'"):
+        # False means "on", strange, but true
         GPIO.output(PIN_LIGHT, False)
-    if msg == "off":
+        print("on")
+        print(PIN_LIGHT)
+    if (msg == "off") or (str(msg) == "b'off'"):
         GPIO.output(PIN_LIGHT, True)
+        print("off")
+        print(PIN_LIGHT)
 
 
 try:
@@ -18,8 +25,8 @@ try:
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PIN_LIGHT, GPIO.OUT)
 
-    # subscribe to the "magnet/switch" topic to forward messages to our callback function
-    broker.subscribe('light', switch)
+    # subscribe to the "light/switch" topic to forward messages to our callback function
+    broker.subscribe('switch', switch)
     broker.loop()
 finally:
     GPIO.cleanup()

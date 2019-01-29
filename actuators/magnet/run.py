@@ -4,10 +4,11 @@ import RPi.GPIO as GPIO
 
 # act on switch message
 def switch(msg):
-    if msg == "on":
-        GPIO.output(PIN_MAGNET, True)
-    if msg == "off":
+    if (msg == "on") or (str(msg) == "b'on'"):
+        # False means "on", strange, but true
         GPIO.output(PIN_MAGNET, False)
+    if (msg == "off") or (str(msg) == "b'off'"):
+        GPIO.output(PIN_MAGNET, True)
 
 
 try:
