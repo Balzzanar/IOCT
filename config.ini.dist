@@ -12,5 +12,5 @@ name = box1
 
 [gpio]
 magnet = 6
-light = 5
+light = 26
 
