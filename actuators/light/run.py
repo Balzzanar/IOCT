@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 # act on switch message
 def switch(msg):
     if msg == "on":
+        # False means "on", strange, but true
         GPIO.output(PIN_LIGHT, False)
     if msg == "off":
         GPIO.output(PIN_LIGHT, True)
