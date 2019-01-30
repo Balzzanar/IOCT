@@ -33,8 +33,9 @@ class BrokerService:
 
     # subscribe to a topic
     def subscribe(self, topic, callback):
+        print("subscribed " + self.topicPrefix + topic)
         self.topics[self.topicPrefix + topic] = callback
-        self.client.subscribe(topic)
+        self.client.subscribe(self.topicPrefix + topic)
 
     # publish a message to a topic
     def publish(self, topic, message):
@@ -54,6 +55,9 @@ class BrokerService:
 
     # The callback for when a PUBLISH message is received from the server.
     def _on_message(self, client, userdata, msg):
+        print(msg.topic)
+        print(msg.payload)
         for topic, callback in self.topics.items():
+            print(topic)
             if msg.topic == topic:
                 callback(msg.payload)
