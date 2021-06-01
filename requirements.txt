@@ -19,5 +19,5 @@ SecretStorage==2.3.1
 six==1.10.0
 spidev==3.3
 ssh-import-id==5.6
-urllib3==1.19.1
+urllib3==1.26.5
 w1thermsensor==1.1.2
